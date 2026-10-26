@@ -1,6 +1,6 @@
-// Somente URL de projeto exclusivo VIRA e chave publishable (nunca secret/service_role).
-// Configure depois de criar o banco VIRA. Sem valores, a página exibe aviso de ativação pendente.
+// Chave publica para navegador; nunca incluir chaves secret/service_role.
+// Projeto isolado: VIRA-APP (Sao Paulo)
 window.VIRA_CONFIG = {
-  url: '',
-  publishableKey: ''
+  url: 'https://fqmphxlvdqwizuzqymza.supabase.co',
+  publishableKey: 'sb_publishable_3uVM1mBfD99cWbjtgLf_-Q_npxcEP3Z'
 };
