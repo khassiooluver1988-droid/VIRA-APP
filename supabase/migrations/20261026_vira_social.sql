@@ -81,8 +81,7 @@ create table if not exists public.reports(
  post_id uuid references public.posts(id) on delete set null,
  reported_user_id uuid references public.profiles(id) on delete set null,
  reason text not null check (char_length(trim(reason)) between 5 and 500),
- created_at timestamptz not null default now(),
-
+ created_at timestamptz not null default now()
 );
 
 create or replace function vira_private.create_profile_for_user()
