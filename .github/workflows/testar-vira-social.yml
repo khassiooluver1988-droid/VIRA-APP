@@ -1,0 +1,28 @@
+name: Testar VIRA Social — preparação
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/index-live.html'
+      - 'docs/live.js'
+      - 'docs/live.css'
+      - 'docs/supabase-config.js'
+      - 'tests/live-smoke.cjs'
+      - '.github/workflows/testar-vira-social.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validar sintaxe JavaScript
+        run: node --check docs/live.js
+      - name: Instalar ferramenta de teste
+        run: npm install --no-save --no-package-lock jsdom@26.1.0
+      - name: Testar cadastro bloqueado sem backend e fluxos de interface simulada
+        run: node tests/live-smoke.cjs
