@@ -4,6 +4,9 @@ on:
     branches: [main]
     paths:
       - 'docs/index-live.html'
+      - 'docs/index.html'
+      - 'docs/assets/branding/kora-logo.webp'
+      - 'tests/kora-logo-assets.cjs'
       - 'docs/live.js'
       - 'docs/live.css'
       - 'docs/supabase-config.js'
@@ -22,6 +25,8 @@ jobs:
           node-version: '22'
       - name: Validar sintaxe JavaScript
         run: node --check docs/live.js
+      - name: Validar asset e referencias da logo
+        run: node tests/kora-logo-assets.cjs
       - name: Instalar ferramenta de teste
         run: npm install --no-save --no-package-lock jsdom@26.1.0
       - name: Testar cadastro bloqueado sem backend e fluxos de interface simulada

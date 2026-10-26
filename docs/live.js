@@ -30,13 +30,13 @@ function modal(title,body){
 function closeModal(){el('overlay-root').replaceChildren()}
 function statusPage(){
  el('app').classList.remove('authenticated');
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/kora-original.jpg" alt="KORA"></div>'+
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img onerror="this.style.display=&quot;none&quot;;this.nextElementSibling.style.display=&quot;inline-block&quot;" src="./assets/branding/kora-logo.webp?v=20261026b" alt="KORA"><strong class="kora-logo-fallback" style="display:none">KORA</strong></div>'+
  '<div class="auth-panel"><h1 class="auth-title">KORA Social</h1><div class="view-notice"><b>Ativação do cadastro pendente.</b><p class="muted-block">A interface já está preparada. Para criar contas de verdade, o projeto exclusivo do KORA precisa ser criado no Supabase e conectado com uma chave pública.</p></div><p class="muted">Nenhuma conta será simulada. Quando a integração estiver ativa, esta tela dará lugar a Entrar e Criar conta.</p></div></div>';
 }
 function renderAuth(){
  el('app').classList.remove('authenticated');
  el('bottom-nav').innerHTML='';
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/kora-original.jpg" alt="KORA — Assista, Conecte-se, Resolva"></div>'+
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img onerror="this.style.display=&quot;none&quot;;this.nextElementSibling.style.display=&quot;inline-block&quot;" src="./assets/branding/kora-logo.webp?v=20261026b" alt="KORA — Assista, Conecte-se, Resolva"><strong class="kora-logo-fallback" style="display:none">KORA</strong></div>'+
  '<div class="auth-panel"><h1 class="auth-title">Entre para a comunidade KORA</h1>'+
  '<p style="text-align:center" class="muted-block">Encontre amigos, compartilhe momentos e faça novas conexões.</p>'+
  '<div class="auth-toggle"><button class="chip '+(authMode==='login'?'active':'')+'" data-act="mode" data-id="login">Entrar</button><button class="chip '+(authMode==='signup'?'active':'')+'" data-act="mode" data-id="signup">Criar conta</button></div>'+
