@@ -1,0 +1,20 @@
+name: vira
+version: 0.1.0+1
+description: MVP demonstrativo do VIRA. Identidade original preservada.
+publish_to: 'none'
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+dependencies:
+  flutter:
+    sdk: flutter
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/branding/vira_logo_transparente.png
+    - assets/branding/vira_simbolo.png
+    - assets/branding/vira_nome.png
+    - assets/branding/vira_slogan.png
