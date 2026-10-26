@@ -1,0 +1,20 @@
+name: Testar VIRA Social no Safari
+on:
+  push:
+    branches: [main]
+    paths: ['docs/index-live.html','docs/live.js','docs/live.css','docs/supabase-config.js','tests/live-webkit.cjs','.github/workflows/testar-vira-social-safari.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  webkit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: 
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock playwright@1.58.2
+      - run: npx playwright install --with-deps webkit
+      - run: node tests/live-webkit.cjs
