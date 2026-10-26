@@ -1,11 +1,11 @@
 'use strict';
-/* VIRA Social — beta real. Os dados são persistidos apenas no Supabase do VIRA.
+/* KORA Social — beta real. Os dados são persistidos apenas no Supabase do KORA.
  * Não há conta demonstrativa e não há simulação de publicações.
  */
-const cfg = window.VIRA_CONFIG || {};
-const BASE = location.href.split('#')[0].split('?')[0];
+const cfg = window.KORA_CONFIG || {};
+const BASE = 'https://khassiooluver1988-droid.github.io/VIRA-APP/index-live.html';
 let sb = null, session = null, me = null, route = 'inicio', busy = false, authMode = 'login', notice = '';
-let people=[],posts=[],likes=[],comments=[],follows=[],requests=[],answers=[],messages=[];
+let people=[],posts=[],likes=[],comments=[],follows=[],requests=[],answers=[],messages=[],stories=[];
 let currentProfile='me', currentChat=null, filter='',lastError='';
 const el = id => document.getElementById(id);
 const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','"':'&quot;'}[c]));
@@ -13,9 +13,9 @@ const formatDate=v=>{try{return new Date(v).toLocaleDateString('pt-BR',{day:'2-d
 const toast=text=>{const n=el('toast');n.textContent=text;n.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>n.classList.remove('show'),5000)};
 const busyUI=flag=>{busy=flag;document.querySelectorAll('button[type="submit"]').forEach(x=>x.disabled=flag)};
 const fallbackError=e=>String(e?.message||e||'Erro inesperado');
-const nav=[['inicio','⌂','Início'],['explorar','◇','Pessoas'],['criar','＋','Criar'],['resolver','✓','Resolver'],['perfil','♙','Perfil']];
+const nav=[['inicio','⌂','Início'],['videos','▷','Vídeos'],['criar','＋','Criar'],['explorar','⌕','Buscar'],['perfil','♙','Perfil']];
 const empty=(heading,description,action='')=>'<div class="empty-state"><b>'+safe(heading)+'</b><p>'+safe(description)+'</p>'+action+'</div>';
-const pOf=id=>people.find(x=>x.id===id)||{id,display_name:'Usuário VIRA',username:'membro',bio:''};
+const pOf=id=>people.find(x=>x.id===id)||{id,display_name:'Usuário KORA',username:'membro',bio:''};
 const avatar=(p,cls='')=>'<div class="avatar '+cls+'">'+safe((p.display_name||'V').trim().charAt(0).toUpperCase())+'</div>';
 const picture=path=>{
  if(!path)return '';
@@ -30,21 +30,21 @@ function modal(title,body){
 function closeModal(){el('overlay-root').replaceChildren()}
 function statusPage(){
  el('app').classList.remove('authenticated');
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/vira-original.webp" alt="VIRA"></div>'+
- '<div class="auth-panel"><h1 class="auth-title">VIRA Social</h1><div class="view-notice"><b>Ativação do cadastro pendente.</b><p class="muted-block">A interface já está preparada. Para criar contas de verdade, o projeto exclusivo do VIRA precisa ser criado no Supabase e conectado com uma chave pública.</p></div><p class="muted">Nenhuma conta será simulada. Quando a integração estiver ativa, esta tela dará lugar a Entrar e Criar conta.</p></div></div>';
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/kora-original.jpg" alt="KORA"></div>'+
+ '<div class="auth-panel"><h1 class="auth-title">KORA Social</h1><div class="view-notice"><b>Ativação do cadastro pendente.</b><p class="muted-block">A interface já está preparada. Para criar contas de verdade, o projeto exclusivo do KORA precisa ser criado no Supabase e conectado com uma chave pública.</p></div><p class="muted">Nenhuma conta será simulada. Quando a integração estiver ativa, esta tela dará lugar a Entrar e Criar conta.</p></div></div>';
 }
 function renderAuth(){
  el('app').classList.remove('authenticated');
  el('bottom-nav').innerHTML='';
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/vira-original.webp" alt="VIRA — Assista, Conecte-se, Resolva"></div>'+
- '<div class="auth-panel"><h1 class="auth-title">Entre para a comunidade VIRA</h1>'+
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img src="./assets/branding/kora-original.jpg" alt="KORA — Assista, Conecte-se, Resolva"></div>'+
+ '<div class="auth-panel"><h1 class="auth-title">Entre para a comunidade KORA</h1>'+
  '<p style="text-align:center" class="muted-block">Encontre amigos, compartilhe momentos e faça novas conexões.</p>'+
  '<div class="auth-toggle"><button class="chip '+(authMode==='login'?'active':'')+'" data-act="mode" data-id="login">Entrar</button><button class="chip '+(authMode==='signup'?'active':'')+'" data-act="mode" data-id="signup">Criar conta</button></div>'+
  (authMode==='reset'?'<form id="reset-form"><label class="auth-field"><span>Seu e-mail</span><input type="email" name="email" required autocomplete="email" placeholder="voce@exemplo.com"></label><button class="primary-btn" type="submit">Enviar link de recuperação</button><p class="auth-help"><button class="ghost-btn" data-act="mode" data-id="login">Voltar</button></p></form>':
  '<form id="auth-form">'+(authMode==='signup'?'<label class="auth-field"><span>Seu nome</span><input name="display_name" minlength="2" maxlength="70" required autocomplete="name" placeholder="Como quer ser chamado?"></label>':'')+
  '<label class="auth-field"><span>E-mail</span><input name="email" required type="email" autocomplete="email" placeholder="voce@exemplo.com"></label>'+
  '<label class="auth-field"><span>Senha</span><input name="password" type="password" minlength="8" required autocomplete="'+(authMode==='signup'?'new-password':'current-password')+'" placeholder="Mínimo de 8 caracteres"></label>'+
- '<button type="submit" class="primary-btn" style="width:100%">'+(authMode==='signup'?'Criar minha conta':'Entrar no VIRA')+'</button></form>'+
+ '<button type="submit" class="primary-btn" style="width:100%">'+(authMode==='signup'?'Criar minha conta':'Entrar no KORA')+'</button></form>'+
  (authMode==='login'?'<p class="auth-help"><button data-act="mode" data-id="reset" class="ghost-btn">Esqueceu a senha?</button></p>':'<p class="auth-footnote">Você poderá ajustar seu nome de usuário no seu perfil após entrar. Se o e-mail exigir confirmação, abra o link recebido para ativar a conta.</p>'))+
  (notice?'<p class="view-notice" role="status">'+safe(notice)+'</p>':'')+'<p class="auth-footnote">Ao criar conta, compartilhe somente informações que você deseja tornar visíveis aos membros da comunidade. Fotos publicadas podem ser acessadas por link.</p></div></div>';
 }
@@ -66,12 +66,27 @@ function postCard(post){
  '<button class="small-btn" data-act="comments" data-id="'+post.id+'">▢ Comentar</button>'+
  '<button class="small-btn" data-act="share" data-id="'+post.id+'">↗ Convidar</button></div></div></article>';
 }
+function storiesBar(){
+ const now=Date.now(),active=stories.filter(x=>new Date(x.expires_at).getTime()>now);
+ const own=active.find(x=>x.author_id===session.user.id);
+ const others=active.filter((x,i,a)=>x.author_id!==session.user.id&&a.findIndex(y=>y.author_id===x.author_id)===i);
+ const ownCard='<button class="kora-story mine" data-act="'+(own?'story-open':'story-create')+'" data-id="'+(own?.id||'')+'" aria-label="'+(own?'Ver meu story':'Criar meu story')+'"><span class="kora-ring">'+avatar(me)+'</span><b>'+(own?'Seu story':'＋ Seu story')+'</b></button>';
+ return '<div class="kora-stories">'+ownCard+others.map(x=>{const p=pOf(x.author_id);return '<button class="kora-story" data-act="story-open" data-id="'+x.id+'"><span class="kora-ring">'+avatar(p)+'</span><b>'+safe(p.username)+'</b></button>'}).join('')+'</div>';
+}
+function createStory(){
+ modal('Publicar story','<p class="muted">Seu story ficará visível para os membros da rede por até 24 horas.</p><form id="story-form"><label class="field"><span>Escolher foto (até 5 MB)</span><input name="photo" type="file" required accept="image/jpeg,image/png,image/webp"></label><label class="field"><span>Legenda opcional</span><input name="caption" maxlength="250" placeholder="Compartilhe seu momento..."></label><button type="submit" class="primary-btn">Publicar meu story</button></form>')
+}
+function openStory(storyId){
+ const st=stories.find(x=>x.id===storyId);if(!st)return;
+ const p=pOf(st.author_id),img=picture(st.image_path);
+ modal('Story de '+p.display_name,'<div class="story-full"><img src="'+safe(img)+'" alt="Story publicado por '+safe(p.display_name)+'" loading="eager"></div><p>'+safe(st.caption||'')+'</p>'+(st.author_id===session.user.id?'<button class="small-btn" data-act="story-delete" data-id="'+st.id+'">Excluir meu story</button>':'')+'<p class="muted">Disponível até '+safe(new Date(st.expires_at).toLocaleString('pt-BR'))+'.</p>');
+}
 function homePage(){
- return '<div class="section-head"><div><div class="eyebrow">SUA COMUNIDADE</div><h1>Novidades do VIRA</h1></div><button class="small-btn" data-act="reload">Atualizar ↻</button></div>'+
- '<div class="compose-box">'+avatar(me,'tiny')+'<button data-route="criar">Compartilhe algo com seus amigos...</button></div>'+
- '<div class="glass-card"><div class="eyebrow">BEM-VINDO À REDE</div><h2>Amizades, momentos e soluções.</h2><p>Convide quem você gosta, publique fotos, siga pessoas e participe da comunidade.</p><button class="primary-btn orange-btn" data-act="invite">Convidar amigos</button></div>'+
- '<h2 style="margin-top:20px">Publicações recentes</h2>'+
- (posts.length?posts.map(postCard).join(''):empty('Seu feed está começando','Convide amigos para criar as primeiras publicações.','<button class="primary-btn" data-route="criar">Criar primeira publicação</button>'));
+ return '<div class="section-head"><h2>Stories e momentos</h2><button class="small-btn" data-act="invite">Convidar +</button></div>'+storiesBar()+
+ '<div class="compose-box">'+avatar(me,'tiny')+'<button data-route="criar">O que deseja compartilhar hoje?</button></div>'+
+ '<div class="kora-intro"><div><h3>Encontre, compartilhe e conecte-se.</h3><p>Seus amigos e familiares poderão aparecer aqui após se cadastrarem.</p></div><button class="small-btn" data-route="resolver">Ajudar</button></div>'+
+ '<div class="section-head"><h2 class="kora-posts-heading">Publicações</h2><button class="ghost-btn" data-act="reload">Atualizar ↻</button></div>'+
+ (posts.length?posts.map(postCard).join(''):empty('Ainda não há publicações','Seu feed será formado por pessoas reais. Publique a primeira foto ou convide familiares.','<button class="primary-btn" data-route="criar">Criar publicação</button>'));
 }
 function personRow(p){
  return '<div class="person-row">'+avatar(p)+'<div><button class="ghost-btn" data-act="open-profile" data-id="'+p.id+'">'+safe(p.display_name)+'</button><small>@'+safe(p.username)+'</small></div>'+
@@ -80,9 +95,9 @@ function personRow(p){
 }
 function explorePage(){
  const list=people.filter(p=>(p.display_name+' '+p.username).toLowerCase().includes(filter.toLowerCase()));
- return '<div class="page-title"><h1>Encontre amigos</h1><button class="small-btn" data-act="invite">Convidar</button></div><p class="muted">Pessoas que já criaram uma conta no VIRA.</p>'+
+ return '<div class="page-title"><h1>Encontre amigos</h1><button class="small-btn" data-act="invite">Convidar</button></div><p class="muted">Pessoas que já criaram uma conta no KORA.</p>'+
  '<input class="search" id="search-people" placeholder="Pesquisar nome ou @usuário" value="'+safe(filter)+'">'+
- '<div id="people-list">'+(list.length?list.map(personRow).join(''):empty('Nenhum perfil encontrado','Convide seus amigos e familiares para entrar no VIRA.'))+'</div>';
+ '<div id="people-list">'+(list.length?list.map(personRow).join(''):empty('Nenhum perfil encontrado','Convide seus amigos e familiares para entrar no KORA.'))+'</div>';
 }
 function createPage(){
  return '<div class="page-title"><h1>Nova publicação</h1></div><p class="muted">O que você quer compartilhar com seus amigos?</p>'+
@@ -93,15 +108,17 @@ function createPage(){
  '<div class="view-notice">Publicação de vídeos curtos, stories e transmissão ao vivo serão implementadas em fases posteriores. Esta versão inicial aceita texto e fotos reais.</div>';
 }
 function profilePage(){
- const p=currentProfile==='me'?me:pOf(currentProfile),mine=posts.filter(x=>x.author_id===p.id),followerCount=follows.filter(x=>x.following_id===p.id).length,followingCount=follows.filter(x=>x.follower_id===p.id).length;
- return '<div class="profile-cover"></div><div class="profile-body"><div class="profile-head">'+avatar(p,'big')+
- '<div><h1 style="margin:0">'+safe(p.display_name)+'</h1><p style="margin:0" class="muted">@'+safe(p.username)+'</p></div></div>'+
- '<p style="margin-top:18px" class="bio">'+safe(p.bio||'Novo integrante da comunidade VIRA.')+'</p>'+
- '<div class="stat-line"><span><b>'+mine.length+'</b><small>Publicações</small></span><span><b>'+followerCount+'</b><small>Seguidores</small></span><span><b>'+followingCount+'</b><small>Seguindo</small></span></div>'+
- '<div class="buttonbar">'+(p.id===session.user.id?'<button class="small-btn" data-act="edit-profile">Editar perfil</button><button class="small-btn" data-act="signout">Sair</button>':
- '<button class="small-btn" data-act="follow" data-id="'+p.id+'">'+(isFollow(p.id)?'Deixar de seguir':'Seguir')+'</button><button class="small-btn" data-act="chat" data-id="'+p.id+'">Mensagem</button>')+'</div></div>'+
- '<h2 style="margin-top:24px">Publicações de '+safe(p.display_name)+'</h2>'+
- (mine.length?mine.map(postCard).join(''):empty('Sem publicações','Nenhuma publicação neste perfil ainda.'));}
+ const p=currentProfile==='me'?me:pOf(currentProfile),mine=posts.filter(x=>x.author_id===p.id);
+ const followerCount=follows.filter(x=>x.following_id===p.id).length,followingCount=follows.filter(x=>x.follower_id===p.id).length;
+ return '<div class="kora-profile"><div class="page-title"><h1>@'+safe(p.username)+'</h1></div>'+
+ '<div class="profile-head">'+avatar(p,'big')+'<div class="stats-row"><div class="counter">'+mine.length+'<span>publicações</span></div><div class="counter">'+followerCount+'<span>seguidores</span></div><div class="counter">'+followingCount+'<span>seguindo</span></div></div></div>'+
+ '<div class="profile-bio"><strong>'+safe(p.display_name)+'</strong><p class="bio">'+safe(p.bio||'Compartilhando meus momentos na KORA.')+'</p></div>'+
+ '<div class="profile-actions">'+(p.id===session.user.id?'<button class="small-btn" data-act="edit-profile">Editar perfil</button><button class="small-btn" data-act="signout">Sair</button>':
+ '<button class="small-btn" data-act="follow" data-id="'+p.id+'">'+(isFollow(p.id)?'Deixar de seguir':'Seguir')+'</button><button class="small-btn" data-act="chat" data-id="'+p.id+'">Mensagem</button>')+'</div>'+
+ '<h2 style="margin-top:28px">Publicações</h2>'+
+ (mine.length?'<div class="kora-grid">'+mine.map(x=>'<button class="kora-tile" data-act="post-open" data-id="'+x.id+'" aria-label="Abrir publicação">'+(x.image_path?'<img alt="" src="'+safe(picture(x.image_path))+'">':'<span class="no-image">✦</span>')+'</button>').join('')+'</div>':
+ empty('Sem publicações ainda','O perfil será preenchido pelas fotos e textos que essa pessoa publicar.'))+'</div>';
+}
 function requestCard(r){
  const author=pOf(r.author_id),count=answers.filter(x=>x.request_id===r.id).length;
  return '<div class="request"><div class="request-head"><b>'+safe(r.title)+'</b><span class="status '+(r.status==='resolved'?'done':'')+'">'+(r.status==='resolved'?'Resolvido':'Aberto')+'</span></div>'+
@@ -110,14 +127,20 @@ function requestCard(r){
  (r.author_id===session.user.id&&r.status!=='resolved'?'<button class="small-btn" data-act="help-resolve" data-id="'+r.id+'">Marcar resolvido</button>':'')+'</div></div>';
 }
 function resolvePage(){
- return '<div class="glass-card"><span class="eyebrow">VIRA A CHAVE</span><h1>Um lugar para se ajudar.</h1><p>Faça perguntas, compartilhe dicas e conecte-se com quem pode contribuir.</p><button class="primary-btn orange-btn" data-act="new-help">+ Pedir ajuda</button></div>'+
+ return '<div class="glass-card"><span class="eyebrow">KORA A CHAVE</span><h1>Um lugar para se ajudar.</h1><p>Faça perguntas, compartilhe dicas e conecte-se com quem pode contribuir.</p><button class="primary-btn orange-btn" data-act="new-help">+ Pedir ajuda</button></div>'+
  '<h2 style="margin-top:24px">Pedidos da comunidade</h2>'+
  (requests.length?requests.map(requestCard).join(''):empty('Nenhum pedido ainda','Você pode iniciar a comunidade de ajuda.','<button class="small-btn" data-act="new-help">Criar pedido</button>'));
+}
+function videosPage(){
+ return '<div class="page-title"><h1>Vídeos</h1></div>'+
+ '<div class="kora-intro" style="display:block;text-align:center;padding:35px 20px"><span style="font-size:45px">▷</span><h2>Vídeos da comunidade</h2>'+
+ '<p>Este espaço receberá vídeos curtos de pessoas cadastradas. O envio e a reprodução de vídeos ainda não foram ativados; nenhuma publicação fictícia será exibida.</p>'+
+ '<button class="primary-btn" data-route="criar">Publicar foto ou texto</button></div>';
 }
 function render(){
  if(!session){renderAuth();return}
  el('app').classList.add('authenticated');renderNav();
- el('view').innerHTML=route==='inicio'?homePage():route==='explorar'?explorePage():route==='criar'?createPage():route==='resolver'?resolvePage():profilePage();
+ el('view').innerHTML=route==='inicio'?homePage():route==='explorar'?explorePage():route==='criar'?createPage():route==='resolver'?resolvePage():route==='videos'?videosPage():profilePage();
 }
 function go(r){route=r;render();window.scrollTo({top:0,behavior:'instant'})}
 async function fetchCollection(table,q){
@@ -137,8 +160,9 @@ async function refresh(){
  fetchCollection('help_requests',q=>q.order('created_at',{ascending:false}).limit(80)),
  fetchCollection('help_answers',q=>q.order('created_at',{ascending:true}).limit(1500)),
  fetchCollection('direct_messages',q=>q.order('created_at',{ascending:true}).limit(1000)),
+ fetchCollection('stories',q=>q.gt('expires_at',new Date().toISOString()).order('created_at',{ascending:false}).limit(100)),
  ]);
- [people,posts,likes,comments,follows,requests,answers,messages]=all;
+ [people,posts,likes,comments,follows,requests,answers,messages,stories]=all;
  me=people.find(x=>x.id===session.user.id);
  if(!me)throw new Error('Seu perfil ainda não foi criado. Entre novamente ou procure suporte.');
  lastError='';render();
@@ -159,7 +183,7 @@ async function processAuth(form){
  else r=await sb.auth.signInWithPassword({email,password});
  if(r.error)throw r.error;
  if(authMode==='signup'&&!r.data.session){authMode='login';notice='Cadastro solicitado. Verifique seu e-mail e confirme a conta pelo link de ativação. Depois, entre com sua senha.';renderAuth();return}
- session=r.data.session||null;if(session){route='inicio';await refresh();toast('Bem-vindo ao VIRA!')}else renderAuth();
+ session=r.data.session||null;if(session){route='inicio';await refresh();toast('Bem-vindo ao KORA!')}else renderAuth();
  }catch(err){notice=fallbackError(err);renderAuth()}finally{busyUI(false)}
 }
 async function action(q){if(busy)return;busy=true;try{await q();}catch(err){toast(fallbackError(err))}finally{busy=false}}
@@ -186,7 +210,7 @@ function chatWith(userId){
 }
 async function invite(){
  const u=BASE;
- if(navigator.share){try{await navigator.share({title:'Entre para o VIRA!',text:'Vamos nos conectar no VIRA — nossa nova rede social.',url:u});return}catch{}}
+ if(navigator.share){try{await navigator.share({title:'Entre para o KORA!',text:'Vamos nos conectar no KORA — nossa nova rede social.',url:u});return}catch{}}
  try{await navigator.clipboard.writeText(u);toast('Link de convite copiado!')}catch{modal('Convidar amigos','<p>Compartilhe este link:</p><p class="simple-text">'+safe(u)+'</p>')}
 }
 function postOptions(id){
@@ -197,10 +221,15 @@ function postOptions(id){
 }
 document.addEventListener('click',e=>{
  const b=e.target.closest('[data-act],[data-route]');if(!b)return;
- if(b.dataset.route){go(b.dataset.route);return}
+ if(b.dataset.route){if(b.dataset.route==='perfil')currentProfile='me';go(b.dataset.route);return}
  const a=b.dataset.act,id=b.dataset.id;
  switch(a){
  case 'close':closeModal();break;
+ case 'notifications':modal('Atividade','<p class="muted">Aqui estarão as novidades de seguidores, curtidas e comentários quando a função de notificações for ativada.</p>');break;
+ case 'story-create':createStory();break;
+ case 'story-open':openStory(id);break;
+ case 'post-open':{const p=posts.find(x=>x.id===id);if(p)modal('Publicação',postCard(p));break;}
+ case 'story-delete':if(confirm('Excluir seu story?'))action(async()=>{const t=await sb.from('stories').delete().eq('id',id).eq('author_id',session.user.id);if(t.error)throw t.error;closeModal();await refresh();});break;
  case 'mode':authMode=id;notice='';renderAuth();break;
  case 'reload':refresh();break;
  case 'search':go('explorar');el('search-people')?.focus();break;
@@ -243,7 +272,17 @@ document.addEventListener('submit',async e=>{
  await action(async()=>{
  const val=name=>f.elements[name]?.value?.trim()||'';
  let result;
- if(f.id==='post-form'){
+ if(f.id==='story-form'){
+ const photo=f.elements.photo.files?.[0];
+ if(!photo||!['image/jpeg','image/png','image/webp'].includes(photo.type)||photo.size>5242880)throw new Error('Escolha uma foto JPG, PNG ou WebP com até 5 MB.');
+ const ext=photo.type==='image/jpeg'?'jpg':photo.type.split('/')[1];
+ const image_path=session.user.id+'/'+crypto.randomUUID()+'.'+ext;
+ const up=await sb.storage.from('vira-media').upload(image_path,photo,{contentType:photo.type,upsert:false});
+ if(up.error)throw up.error;
+ result=await sb.from('stories').insert({author_id:session.user.id,image_path,caption:val('caption')});
+ if(result.error){await sb.storage.from('vira-media').remove([image_path]);throw result.error}
+ go('inicio');
+ }else if(f.id==='post-form'){
  const photo=f.elements.photo.files?.[0];let image_path=null;
  if(photo){
  if(!['image/jpeg','image/png','image/webp'].includes(photo.type)||photo.size>5242880)throw new Error('Use foto JPG, PNG ou WebP de até 5 MB.');
@@ -278,7 +317,7 @@ document.addEventListener('submit',async e=>{
  if(fid==='message-form')chatWith(target);
  if(fid==='comment-form')commentsDialog(target);
  if(fid==='answer-form')helpDialog(target);
- toast(fid==='report-form'?'Denúncia registrada.':'Salvo no VIRA.');
+ toast(fid==='report-form'?'Denúncia registrada.':'Salvo no KORA.');
  });
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});

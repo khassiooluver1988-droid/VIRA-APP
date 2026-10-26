@@ -5,7 +5,7 @@ const assert = require('node:assert/strict'); const {webkit,devices}=require('pl
  const errors=[];page.on('pageerror',e=>errors.push(e.message));
  const response=await page.goto('https://khassiooluver1988-droid.github.io/VIRA-APP/index-live.html',{waitUntil:'domcontentloaded',timeout:60000});
  assert.equal(response.status(),200);
- await page.getByText('Entre para a comunidade VIRA').waitFor({timeout:30000});
+ await page.getByText('Entre para a comunidade KORA').waitFor({timeout:30000});
  assert.equal(await page.locator('#auth-form').count(),1);
  await page.locator('[data-act="mode"][data-id="signup"]').click();
  await page.locator('#auth-form input[name="display_name"]').waitFor();

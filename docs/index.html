@@ -1,33 +1,16 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#09070d"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="VIRA Social">
-<meta name="description" content="VIRA: compartilhe momentos, crie amizades, descubra talentos e encontre soluções. Versão demonstrativa.">
-<title>VIRA — Rede Social</title><link rel="stylesheet" href="./social.css?v=2">
-</head>
-<body>
-<div class="intro" id="intro"><div class="intro-inner"><img src="./assets/branding/vira-original.webp" alt="VIRA — Assista, Conecte-se, Resolva." onerror="this.hidden=true"><strong class="brand-fallback">VIRA</strong><div class="intro-bar"></div><span>ASSISTA · CONECTE-SE · RESOLVA</span></div></div>
-<div class="app">
-<aside class="sidebar">
- <div class="logo-wrap"><img src="./assets/branding/vira-original.webp" alt="Logo VIRA" onerror="this.hidden=true"><span>VIRA</span></div>
- <nav class="side-nav" id="side-nav" aria-label="Navegação principal"></nav>
- <div class="side-foot"><p>Rede social em construção</p><small>Demonstração no seu navegador</small></div>
-</aside>
-<div class="frame">
-<header class="topbar"><div class="topbrand"><span class="brand-dot">V</span><span>VIRA<span class="brand-accent">.</span></span></div>
-<div class="top-actions">
-<button type="button" class="icon-btn" data-act="show-search" aria-label="Pesquisar" title="Pesquisar">⌕</button>
-<button type="button" class="icon-btn" data-act="notifications" aria-label="Notificações" title="Notificações">♡<i id="notification-indicator"></i></button>
-<button type="button" class="icon-btn" data-act="messages" aria-label="Mensagens" title="Mensagens">✉</button>
-</div></header>
-<div class="local-alert"><span class="alert-dot"></span><span><b>Protótipo interativo</b> — publicações, amigos e mensagens são simulações salvas somente neste navegador.</span></div>
-<main id="view" tabindex="-1"></main>
-<nav class="bottom-nav" id="bottom-nav" aria-label="Navegação principal"></nav>
-</div>
-<aside class="right-column" id="right-column"><div class="right-inner"><div class="profile-bubble"><div class="avatar avatar-me">V</div><div><b>Você no VIRA</b><small>Perfil de demonstração</small></div></div><h3>Conecte-se</h3><div id="suggestions"></div><hr><p class="right-caption">O VIRA combina histórias, amizades e oportunidades reais. Conexões com outras pessoas serão ativadas quando houver backend e contas.</p></div></aside>
-</div>
-<div id="overlay-root"></div><div role="status" aria-live="polite" id="toast"></div>
-<script src="./social.js?v=2" defer></script>
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#fffaf4"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="apple-mobile-web-app-title" content="KORA"><meta name="description" content="KORA — Conexões, publicações, amizades e comunidade."><title>KORA — A sua comunidade</title>
+<link rel="stylesheet" href="./social.css?v=2"><link rel="stylesheet" href="./live.css?v=1"><link rel="stylesheet" href="./kora-theme.css?v=1"><style>.kora-official-logo{object-fit:contain;display:block}.splash-logo{width:clamp(200px,60vw,310px);height:auto;mix-blend-mode:multiply}.splash-core .splash-logo{margin:0 auto}.header-logo{height:57px;width:57px;mix-blend-mode:multiply}.topbrand{gap:0}.sidebar-logo{width:85px;height:85px;mix-blend-mode:multiply}.logo-wrap{height:115px}.auth-logo img{display:block!important;height:170px!important;width:170px!important;mix-blend-mode:multiply}.auth-logo::after{display:none!important}.story-full img{display:block;max-height:70vh;max-width:100%;width:100%;object-fit:contain;border-radius:15px}.post .buttonbar .liked{color:#e3298c!important}.post .buttonbar button{font-size:14px!important}.nav-link:focus-visible{outline:2px solid #8926de} @media(max-width:720px){.topbar .topbrand{margin-left:25px;gap:0}.header-logo{width:46px;height:46px}.topbar .topbrand .kora-wordmark{font-size:26px}.topbar .top-actions{gap:0}.topbar .icon-btn{width:34px}.splash-logo{max-width:260px}}</style></head><body>
+<div id="kora-splash" class="kora-splash" aria-hidden="true"><div class="splash-orbit s1"></div><div class="splash-orbit s2"></div><div class="splash-core"><img class="kora-official-logo splash-logo" src="./assets/branding/kora-original.jpg" alt="KORA — marca original"><span>CONEXÕES QUE TRANSFORMAM</span><div class="splash-progress"></div></div></div>
+<div class="app" id="app">
+<aside class="sidebar"><div class="logo-wrap"><img class="kora-official-logo sidebar-logo" src="./assets/branding/kora-original.jpg" alt="KORA"><span class="kora-wordmark">KORA</span></div><nav id="side-nav" class="side-nav" aria-label="Navegação"></nav><div class="side-foot">Sua rede de conexões e amizades</div></aside>
+<div class="frame"><header class="topbar">
+<button class="top-quick" data-route="criar" aria-label="Criar publicação" title="Criar publicação">＋</button>
+<div class="topbrand"><img class="kora-official-logo header-logo" src="./assets/branding/kora-original.jpg" alt=""><span class="kora-wordmark">KORA</span></div>
+<div class="top-actions"><button class="icon-btn" data-act="notifications" aria-label="Atividade" title="Atividade">♡</button><button class="icon-btn" data-act="inbox" aria-label="Mensagens" title="Mensagens">♧</button></div></header>
+<main id="view" aria-live="polite"><div class="center-loader">Abrindo a comunidade...</div></main>
+<nav class="bottom-nav" id="bottom-nav" aria-label="Navegação principal"></nav></div>
+<aside class="right-column"><div class="right-inner"><div class="kora-wordmark">KORA</div><h3>Encontre pessoas e histórias.</h3><p class="muted">Os perfis, stories e publicações aparecem aqui conforme pessoas reais entrarem na rede.</p><button class="primary-btn" data-act="invite">Convidar pessoas</button></div></aside></div>
+<div id="overlay-root"></div><div id="toast" role="status" aria-live="polite" class="toast"></div>
+<script defer src="./supabase-config.js?v=1"></script><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.0/dist/umd/supabase.min.js"></script><script defer src="./live.js?v=4"></script>
 </body></html>

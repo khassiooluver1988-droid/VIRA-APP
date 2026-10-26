@@ -1,0 +1,101 @@
+/* KORA ivory visual system — leaves Supabase functionality intact */
+:root{--bg:#fffaf4;--panel:#fff;--surface:#fff;--surface2:#f8f4f7;--line:#eee8e6;--primary:#8526ed;--magenta:#e028c1;--orange:#ff9614;--fg:#24212b;--muted:#8d8994;--success:#24845c;--shadow:0 10px 30px #270e4010}
+html,body{background:#fffaf4!important;color:#22212a!important;color-scheme:light;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif}
+.app,.frame{background:#fffaf4!important;color:#202029}
+.frame{border-right:1px solid #eee4e8}
+.sidebar,.right-column{background:#fffaf4;border-color:#efe5e8}
+.logo-wrap span.kora-wordmark{display:block;font-size:35px}
+.kora-wordmark{display:inline-block!important;font-size:27px;font-weight:1000;letter-spacing:-1.2px;line-height:1.1;background:linear-gradient(112deg,#ffad0f 1%,#ff4f43 26%,#eb0c97 50%,#8420f3 72%,#0875ff 100%);background-clip:text;-webkit-background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.kora-wordmark.big{font-size:clamp(62px,16vw,100px);letter-spacing:-4px}
+.topbar{height:65px;display:flex;align-items:center;justify-content:space-between;background:#fffaf4f2!important;border-color:#ede2df;padding:0 14px}
+.topbar .topbrand{display:flex!important;align-items:center;justify-content:center;flex:1;text-align:center;margin-left:38px}
+.topbar .topbrand .kora-wordmark{font-size:32px}
+.top-actions{margin-left:0!important;gap:1px}.icon-btn,.round-btn{color:#1a1820!important;font-size:25px}.icon-btn:hover,.round-btn:hover{background:#f4ebf4!important}
+.top-quick{width:36px;height:36px;border:2px solid #eb54aa;background:white;color:#ac22c5;font-size:30px;line-height:1;border-radius:11px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px #ffa61755}
+.side-nav .nav-link{color:#40384b}.nav-link.active{background:#f2e5f8!important;color:#7820cc!important}
+.side-foot{color:#8a7d8a}
+.right-inner h3{margin-top:18px}
+.auth-shell{max-width:430px}
+.auth-panel{background:white!important;border:1px solid #efe2e9!important;box-shadow:0 20px 50px #1f092010}
+.auth-title{color:#211724}
+.auth-logo{padding:4px 0 15px}.auth-logo img{display:none}.auth-logo::after{content:"KORA";font-weight:1000;font-size:55px;letter-spacing:-2px;background:linear-gradient(120deg,#ff9917,#eb279a,#8027ec,#287df9);background-clip:text;-webkit-background-clip:text;color:transparent}
+.auth-toggle .chip{flex:1}.chip{background:#fff!important;border:1px solid #eee3ed!important;color:#554a58!important}
+.chip.active{background:linear-gradient(100deg,#9a21fb,#e53aba)!important;color:white!important;border:0!important}
+.auth-field span,.field span,.field label{color:#39313b!important}
+.auth-field input,.field input,.field textarea,.field select,.search{background:#fffcfc!important;border:1px solid #e5dce3!important;color:#25212d!important;box-shadow:none!important}
+input::placeholder,textarea::placeholder{color:#a19ba3}
+.auth-footnote,.password-help,.muted,.right-caption,small,.meta,.action-count{color:#89838b!important}
+.auth-help{color:#68606a}
+.primary-btn{background:linear-gradient(100deg,#ffa618 0%,#f12898 45%,#6f2eff 100%);border:none;color:white!important;box-shadow:0 5px 15px #a91f9c15;border-radius:13px;padding:13px 18px}
+.primary-btn.orange-btn{background:linear-gradient(100deg,#ffad19,#f64c70,#8f2af7);color:white!important}
+.small-btn{color:#413748!important;background:#f8f5f8!important;border:1px solid #ede7ee!important;border-radius:11px}
+.ghost-btn{color:#842ddc!important}
+.section-head h1,.page-title h1,h1,h2,h3,.post-head strong,.person-row b,.request b{color:#27212b!important}
+.glass-card,.box,.request,.person-row{background:#fff!important;border-color:#eee7ee!important;color:#28212e}
+.glass-card{background:linear-gradient(120deg,#fff8fc,#fff6ec)!important;border:1px solid #eee5eb!important;box-shadow:0 5px 25px #520e4010}
+.glass-card .eyebrow,.eyebrow{color:#a038b3!important}
+.glass-card p,.box p,.request p,.post p{color:#34303a!important}
+.profile-cover{height:120px;background:linear-gradient(110deg,#ffb033,#fe5294,#ad2df5,#1d7ff8);border-radius:16px}
+.profile-body{padding:0 8px 14px}
+.avatar{color:white!important;background:linear-gradient(125deg,#f6a218,#ec35ad,#7440e6)!important;border:2px solid #fff!important}
+.post{background:#fff!important;border-color:#eee9ed!important;border-radius:0!important;margin:0 -12px 16px!important;border-left:0!important;border-right:0!important}
+.post-head{padding:12px 14px}.post-head small{color:#96909d!important}.post-body{padding:10px 14px 15px}
+.post-body .simple-text{color:#28212d!important;font-size:14px}
+.post .buttonbar{display:flex;align-items:center;justify-content:flex-start;gap:3px}
+.post .buttonbar button{background:none!important;border:none!important;font-size:12px;color:#2a202c!important}
+.post .buttonbar button:first-child{color:#cc2095!important;font-size:15px}
+.post .buttonbar button:last-child{margin-left:auto}
+.post .card-photo{width:100%;max-height:75vh;object-fit:cover;border-radius:0}
+.post-head .round-btn{color:#332d38}
+.compose-box{background:#fff!important;border-color:#eee5ea!important;box-shadow:0 2px 15px #31073a08}
+.compose-box button{background:#f9f6f8!important;border:1px solid #f1eaf0!important;color:#9a93a3!important}
+.empty-state{background:#fff!important;border:1px dashed #e3d5e5;color:#968997!important}
+.empty-state b{color:#2a2230!important}
+.page-title{padding:6px 0 15px}
+.person-row,.request{box-shadow:0 3px 14px #270f3208}
+.user-label{background:#f7effc;color:#8d38d5;border-color:#f1e2f8}
+.stat-line b{color:#221d24}
+.bio{color:#3d3643}
+.media{background:#f7e9f7}
+.nav-link{color:#4b4553!important}
+.bottom-nav{background:#fffbf8f7!important;border-top:1px solid #f0e8ed!important}
+.bottom-nav .nav-link.active{background:none!important;color:#862be4!important}
+.bottom-nav .nav-ico{font-size:24px!important}
+.bottom-nav .nav-link[data-route="criar"] .nav-ico{background:linear-gradient(145deg,#ffa521,#e823af,#632af4);border-radius:10px;padding:2px 10px;color:white!important}
+.bottom-nav .nav-link[data-route="criar"]{margin-top:-3px}
+.toast{background:#21152d;color:#fff}
+.overlay{background:#210827a1}.dialog{background:#fffcfb!important;color:#28212d!important;border-color:#eedee9}
+.dialog h2,.dialog b{color:#302535!important}
+.dialog .field input,.dialog .field textarea,.dialog .field select,.msg-form input{color:#29212d!important;background:#fff!important;border:1px solid #e4d5e6!important}
+.dialog .comment{background:#f6eff8;color:#302437}
+.dialog .bubble{color:#fff;background:#963de7}.dialog .bubble.them{background:#f0e3f1;color:#2c2231}
+.view-notice{background:#fff4eb!important;border:1px solid #f2e3da;color:#77543a}
+.kora-stories{display:flex;align-items:flex-start;gap:14px;overflow:auto;padding:14px 2px 16px;margin:0 -2px 7px;scrollbar-width:none}
+.kora-story{border:0;background:none;color:#57515c;flex:0 0 76px;display:flex;align-items:center;gap:7px;flex-direction:column;max-width:80px;font-size:11px;text-align:center}
+.kora-ring{padding:3px;background:linear-gradient(140deg,#ffb526,#ed158f,#8e2bf1);border-radius:50%}
+.kora-ring .avatar{width:58px;height:58px;border:3px solid #fff!important;font-size:22px}
+.kora-story.mine .kora-ring{background:#e9dce9}.kora-story b{font-size:11px;max-width:76px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:550}
+.kora-new{font-size:11px;color:#8f818d!important}
+.kora-intro{padding:18px;background:#fff;border:1px solid #f0e5ef;border-radius:18px;margin:10px 0 22px;display:flex;gap:12px;align-items:center}
+.kora-intro p{margin:3px 0;color:#827a8a;font-size:12px}.kora-intro .small-btn{white-space:nowrap}
+.kora-posts-heading{margin:22px 0 10px;font-size:17px}
+.kora-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin:20px -6px}
+.kora-tile{aspect-ratio:1;background:#f9eefa;overflow:hidden;position:relative;display:grid;place-items:center}
+.kora-tile img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.kora-tile .no-image{display:block;font-size:27px;background:linear-gradient(120deg,#f9b63d,#e132b4,#7756ec);color:white;width:100%;height:100%;display:grid;place-items:center}
+.kora-profile{padding:14px 2px}
+.kora-profile .profile-head{align-items:center;justify-content:space-between;gap:14px}
+.kora-profile .counter{font-size:16px;font-weight:800;text-align:center}
+.kora-profile .counter span{display:block;font-size:11px;font-weight:400;color:#776e79}
+.kora-profile .stats-row{display:flex;gap:20px;flex:1;justify-content:space-around}
+.kora-profile .profile-bio{margin:18px 5px 12px;line-height:1.45}
+.kora-profile .profile-actions{display:flex;gap:10px}.kora-profile .profile-actions .small-btn{flex:1;text-align:center}
+.kora-splash{position:fixed;inset:0;z-index:99;pointer-events:none;display:grid;place-items:center;background:radial-gradient(ellipse at 10% 20%,#ffd8e950,transparent 55%),radial-gradient(ellipse at 95% 80%,#ecc9ff6b,transparent 60%),#fffaf4;animation:kora-hide .5s 1.9s forwards}
+.splash-core{text-align:center;position:relative;z-index:2;animation:kora-rise .95s both}
+.splash-core>span{font-size:10px;letter-spacing:3px;color:#82708a;display:block;margin-top:20px}
+.splash-progress{width:95px;height:4px;border-radius:10px;background:linear-gradient(90deg,#ffab12,#f621a3,#6733f1);margin:25px auto 0;animation:kora-grow 1.5s both}
+.splash-orbit{border:12px solid transparent;border-top-color:#ffae2670;border-bottom-color:#c836ef33;width:115vw;height:55vh;border-radius:50%;position:absolute;transform:rotate(-30deg);filter:blur(2px);animation:kora-spin 2.2s both}.splash-orbit.s2{border-top-color:#d13ae85c;border-bottom-color:#fd89c763;transform:rotate(20deg);width:90vw;height:38vh}
+@keyframes kora-rise{from{opacity:0;transform:scale(.65) translateY(25px)}to{opacity:1;transform:scale(1) translateY(0)}}@keyframes kora-spin{from{opacity:.2;scale:.6}to{opacity:1;scale:1}}@keyframes kora-grow{from{width:0}to{width:95px}}@keyframes kora-hide{to{opacity:0;visibility:hidden}}
+@media(min-width:800px){.topbar .topbrand{margin-left:0}.top-quick{margin-left:auto}.post{margin:0 0 16px!important;border:1px solid #eee5e9!important;border-radius:17px!important}.post .card-photo{border-radius:0}.kora-stories{padding-top:0}}
+@media(max-width:720px){.topbar{height:62px!important;padding:0 12px}.topbar .topbrand{margin-left:45px}.topbar .topbrand .kora-wordmark{font-size:29px}.top-actions .icon-btn{font-size:25px}.kora-stories{gap:7px;padding-top:10px}.kora-story{flex-basis:71px}.kora-ring .avatar{width:56px;height:56px}.post{margin-left:-12px!important;margin-right:-12px!important}.post-body{padding-bottom:18px}.kora-intro{padding:13px}.kora-intro h3{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.kora-splash{display:none}}

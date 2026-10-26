@@ -23,7 +23,7 @@ async function boot(config={},mock=null) {
  assert.match(dom.window.document.body.textContent,/Ativação do cadastro pendente/);
  dom.window.close();
  const sid='c95b89de-7347-4214-af53-bb42534f70dc';
- const data={profiles:[{id:sid,username:'pessoa_vira',display_name:'Pessoa VIRA',bio:'Eu gosto do VIRA'}],posts:[],likes:[],comments:[],follows:[],help_requests:[],help_answers:[],direct_messages:[]};
+ const data={profiles:[{id:sid,username:'pessoa_vira',display_name:'Pessoa VIRA',bio:'Eu gosto do VIRA'}],posts:[],likes:[],comments:[],follows:[],help_requests:[],help_answers:[],direct_messages:[],stories:[]};
  const mutator=(table,method,payload)=>{if(method==='insert'){data[table].push({...payload,id:'a2fce48f-2511-4dc0-b8e3-835cace64222',created_at:new Date().toISOString()})}return {data:[],error:null}};
  const query=table=>({
   select(){return this},order(){return this},limit(){return this},eq(){return this},
@@ -44,7 +44,7 @@ async function boot(config={},mock=null) {
  };
  dom=await boot({url:'https://abcdabcdabcdabcdabcd.supabase.co',publishableKey:'sb_publishable_test'},mock);
  const d=dom.window.document;
- assert.match(d.querySelector('#view').textContent,/Novidades do VIRA/);
+ assert.match(d.querySelector('#view').textContent,/Stories e momentos/);
  assert.equal(d.querySelectorAll('#bottom-nav [data-route]').length,5);
  d.querySelector('[data-route="criar"]').click();await wait(10);
  assert.ok(d.querySelector('#post-form'));
