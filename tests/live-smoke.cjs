@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const {JSDOM} = require('jsdom');
 const html = fs.readFileSync('docs/index-live.html','utf8');
 const source = fs.readFileSync('docs/live.js','utf8');
-assert.match(html, /KORA/);
+assert.match(html, /KLIX/);
 assert.match(source, /auth\.signUp/);
 assert.match(source, /auth\.signInWithPassword/);
 assert.match(source, /from\('posts'\)/);

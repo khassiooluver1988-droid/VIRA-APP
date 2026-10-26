@@ -1,10 +1,10 @@
 const assert=require('node:assert/strict');const fs=require('node:fs');const {JSDOM}=require('jsdom');
 const html=fs.readFileSync('docs/index.html','utf8');const css=fs.readFileSync('docs/kora-theme.css','utf8');const js=fs.readFileSync('docs/live.js','utf8');
 const dom=new JSDOM(html);const d=dom.window.document;
-assert.match(d.title,/KORA/);
+assert.match(d.title,/KLIX/);
 assert.equal(d.querySelectorAll('.topbar').length,1);
-assert.ok(d.querySelector('.kora-splash'));assert.ok(d.querySelector('.kora-official-logo'));
+assert.ok(d.querySelector('.kora-splash'));assert.ok(d.querySelector('#kora-splash img[src*="klix-splash.webp"]'));assert.equal(d.querySelectorAll('.topbrand img').length,0);
 assert.match(css,/#fffaf4/);assert.match(js,/storiesBar/);assert.match(js,/signUp/);
 assert.doesNotMatch(html,/moura\.jorgiana|fake profile|perfis fictícios/);
 assert.equal(d.querySelectorAll('#view .post').length,0);
-console.log('PASSOU: KORA na rota principal com nova marca, marfim, splash motion, feed vazio sem pessoas inventadas e Supabase mantido.');
+console.log('PASSOU: KLIX na rota principal com nova marca, marfim, splash motion, feed vazio sem pessoas inventadas e Supabase mantido.');

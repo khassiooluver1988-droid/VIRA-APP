@@ -1,5 +1,5 @@
 'use strict';
-/* KORA Social — beta real. Os dados são persistidos apenas no Supabase do KORA.
+/* KLIX Social — beta real. Os dados são persistidos apenas no Supabase do KLIX.
  * Não há conta demonstrativa e não há simulação de publicações.
  */
 const cfg = window.VIRA_CONFIG || {};
@@ -15,8 +15,12 @@ const busyUI=flag=>{busy=flag;document.querySelectorAll('button[type="submit"]')
 const fallbackError=e=>String(e?.message||e||'Erro inesperado');
 const nav=[['inicio','⌂','Início'],['videos','▷','Vídeos'],['criar','＋','Criar'],['explorar','⌕','Buscar'],['perfil','♙','Perfil']];
 const empty=(heading,description,action='')=>'<div class="empty-state"><b>'+safe(heading)+'</b><p>'+safe(description)+'</p>'+action+'</div>';
-const pOf=id=>people.find(x=>x.id===id)||{id,display_name:'Usuário KORA',username:'membro',bio:''};
-const avatar=(p,cls='')=>'<div class="avatar '+cls+'">'+safe((p.display_name||'V').trim().charAt(0).toUpperCase())+'</div>';
+const pOf=id=>people.find(x=>x.id===id)||{id,display_name:'Usuário KLIX',username:'membro',bio:''};
+const avatar=(p,cls='')=>{
+ const letter=safe((p?.display_name||'K').trim().charAt(0).toUpperCase());
+ const src=p?.avatar_path?picture(p.avatar_path):'';
+ return '<div class="avatar '+safe(cls)+' klix-avatar">'+letter+(src?'<img loading="lazy" class="avatar-photo" alt="" src="'+safe(src)+'" onerror="this.remove()">':'')+'</div>';
+};
 const picture=path=>{
  if(!path)return '';
  try{const o=sb.storage.from('vira-media').getPublicUrl(path);const u=new URL(o.data.publicUrl);if(u.protocol!=='https:')return '';return u.href}catch{return ''}
@@ -30,21 +34,21 @@ function modal(title,body){
 function closeModal(){el('overlay-root').replaceChildren()}
 function statusPage(){
  el('app').classList.remove('authenticated');
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img onerror="this.style.display=&quot;none&quot;;this.nextElementSibling.style.display=&quot;inline-block&quot;" src="./assets/branding/kora-logo.webp?v=20261026b" alt="KORA"><strong class="kora-logo-fallback" style="display:none">KORA</strong></div>'+
- '<div class="auth-panel"><h1 class="auth-title">KORA Social</h1><div class="view-notice"><b>Ativação do cadastro pendente.</b><p class="muted-block">A interface já está preparada. Para criar contas de verdade, o projeto exclusivo do KORA precisa ser criado no Supabase e conectado com uma chave pública.</p></div><p class="muted">Nenhuma conta será simulada. Quando a integração estiver ativa, esta tela dará lugar a Entrar e Criar conta.</p></div></div>';
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><strong class="klix-auth-mark">KLIX</strong></div>'+
+ '<div class="auth-panel"><h1 class="auth-title">KLIX Social</h1><div class="view-notice"><b>Ativação do cadastro pendente.</b><p class="muted-block">A interface já está preparada. Para criar contas de verdade, o projeto exclusivo do KLIX precisa ser criado no Supabase e conectado com uma chave pública.</p></div><p class="muted">Nenhuma conta será simulada. Quando a integração estiver ativa, esta tela dará lugar a Entrar e Criar conta.</p></div></div>';
 }
 function renderAuth(){
  el('app').classList.remove('authenticated');
  el('bottom-nav').innerHTML='';
- el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><img onerror="this.style.display=&quot;none&quot;;this.nextElementSibling.style.display=&quot;inline-block&quot;" src="./assets/branding/kora-logo.webp?v=20261026b" alt="KORA — Assista, Conecte-se, Resolva"><strong class="kora-logo-fallback" style="display:none">KORA</strong></div>'+
- '<div class="auth-panel"><h1 class="auth-title">Entre para a comunidade KORA</h1>'+
+ el('view').innerHTML='<div class="auth-shell"><div class="auth-logo"><strong class="klix-auth-mark">KLIX</strong></div>'+
+ '<div class="auth-panel"><h1 class="auth-title">Entre para a comunidade KLIX</h1>'+
  '<p style="text-align:center" class="muted-block">Encontre amigos, compartilhe momentos e faça novas conexões.</p>'+
  '<div class="auth-toggle"><button class="chip '+(authMode==='login'?'active':'')+'" data-act="mode" data-id="login">Entrar</button><button class="chip '+(authMode==='signup'?'active':'')+'" data-act="mode" data-id="signup">Criar conta</button></div>'+
  (authMode==='reset'?'<form id="reset-form"><label class="auth-field"><span>Seu e-mail</span><input type="email" name="email" required autocomplete="email" placeholder="voce@exemplo.com"></label><button class="primary-btn" type="submit">Enviar link de recuperação</button><p class="auth-help"><button class="ghost-btn" data-act="mode" data-id="login">Voltar</button></p></form>':
  '<form id="auth-form">'+(authMode==='signup'?'<label class="auth-field"><span>Seu nome</span><input name="display_name" minlength="2" maxlength="70" required autocomplete="name" placeholder="Como quer ser chamado?"></label>':'')+
  '<label class="auth-field"><span>E-mail</span><input name="email" required type="email" autocomplete="email" placeholder="voce@exemplo.com"></label>'+
  '<label class="auth-field"><span>Senha</span><input name="password" type="password" minlength="8" required autocomplete="'+(authMode==='signup'?'new-password':'current-password')+'" placeholder="Mínimo de 8 caracteres"></label>'+
- '<button type="submit" class="primary-btn" style="width:100%">'+(authMode==='signup'?'Criar minha conta':'Entrar no KORA')+'</button></form>'+
+ '<button type="submit" class="primary-btn" style="width:100%">'+(authMode==='signup'?'Criar minha conta':'Entrar no KLIX')+'</button></form>'+
  (authMode==='login'?'<p class="auth-help"><button data-act="mode" data-id="reset" class="ghost-btn">Esqueceu a senha?</button></p>':'<p class="auth-footnote">Você poderá ajustar seu nome de usuário no seu perfil após entrar. Se o e-mail exigir confirmação, abra o link recebido para ativar a conta.</p>'))+
  (notice?'<p class="view-notice" role="status">'+safe(notice)+'</p>':'')+'<p class="auth-footnote">Ao criar conta, compartilhe somente informações que você deseja tornar visíveis aos membros da comunidade. Fotos publicadas podem ser acessadas por link.</p></div></div>';
 }
@@ -70,7 +74,7 @@ function storiesBar(){
  const now=Date.now(),active=stories.filter(x=>new Date(x.expires_at).getTime()>now);
  const own=active.find(x=>x.author_id===session.user.id);
  const others=active.filter((x,i,a)=>x.author_id!==session.user.id&&a.findIndex(y=>y.author_id===x.author_id)===i);
- const ownCard='<button class="kora-story mine" data-act="'+(own?'story-open':'story-create')+'" data-id="'+(own?.id||'')+'" aria-label="'+(own?'Ver meu story':'Criar meu story')+'"><span class="kora-ring">'+avatar(me)+'</span><b>'+(own?'Seu story':'＋ Seu story')+'</b></button>';
+ const ownCard='<button class="kora-story mine" data-act="'+(own?'story-open':'story-create')+'" data-id="'+(own?.id||'')+'" aria-label="'+(own?'Ver meu story':'Criar meu story')+'"><span class="kora-ring"><span class="klix-story-center">'+(own?avatar(me):'<span class="klix-story-plus" aria-hidden="true">+</span>')+'</span></span><b>Seu story</b></button>';
  return '<div class="kora-stories">'+ownCard+others.map(x=>{const p=pOf(x.author_id);return '<button class="kora-story" data-act="story-open" data-id="'+x.id+'"><span class="kora-ring">'+avatar(p)+'</span><b>'+safe(p.username)+'</b></button>'}).join('')+'</div>';
 }
 function createStory(){
@@ -95,9 +99,9 @@ function personRow(p){
 }
 function explorePage(){
  const list=people.filter(p=>(p.display_name+' '+p.username).toLowerCase().includes(filter.toLowerCase()));
- return '<div class="page-title"><h1>Encontre amigos</h1><button class="small-btn" data-act="invite">Convidar</button></div><p class="muted">Pessoas que já criaram uma conta no KORA.</p>'+
+ return '<div class="page-title"><h1>Encontre amigos</h1><button class="small-btn" data-act="invite">Convidar</button></div><p class="muted">Pessoas que já criaram uma conta no KLIX.</p>'+
  '<input class="search" id="search-people" placeholder="Pesquisar nome ou @usuário" value="'+safe(filter)+'">'+
- '<div id="people-list">'+(list.length?list.map(personRow).join(''):empty('Nenhum perfil encontrado','Convide seus amigos e familiares para entrar no KORA.'))+'</div>';
+ '<div id="people-list">'+(list.length?list.map(personRow).join(''):empty('Nenhum perfil encontrado','Convide seus amigos e familiares para entrar no KLIX.'))+'</div>';
 }
 function createPage(){
  return '<div class="page-title"><h1>Nova publicação</h1></div><p class="muted">O que você quer compartilhar com seus amigos?</p>'+
@@ -112,7 +116,7 @@ function profilePage(){
  const followerCount=follows.filter(x=>x.following_id===p.id).length,followingCount=follows.filter(x=>x.follower_id===p.id).length;
  return '<div class="kora-profile"><div class="page-title"><h1>@'+safe(p.username)+'</h1></div>'+
  '<div class="profile-head">'+avatar(p,'big')+'<div class="stats-row"><div class="counter">'+mine.length+'<span>publicações</span></div><div class="counter">'+followerCount+'<span>seguidores</span></div><div class="counter">'+followingCount+'<span>seguindo</span></div></div></div>'+
- '<div class="profile-bio"><strong>'+safe(p.display_name)+'</strong><p class="bio">'+safe(p.bio||'Compartilhando meus momentos na KORA.')+'</p></div>'+
+ '<div class="profile-bio"><strong>'+safe(p.display_name)+'</strong><p class="bio">'+safe(p.bio||'Compartilhando meus momentos na KLIX.')+'</p></div>'+
  '<div class="profile-actions">'+(p.id===session.user.id?'<button class="small-btn" data-act="edit-profile">Editar perfil</button><button class="small-btn" data-act="signout">Sair</button>':
  '<button class="small-btn" data-act="follow" data-id="'+p.id+'">'+(isFollow(p.id)?'Deixar de seguir':'Seguir')+'</button><button class="small-btn" data-act="chat" data-id="'+p.id+'">Mensagem</button>')+'</div>'+
  '<h2 style="margin-top:28px">Publicações</h2>'+
@@ -127,7 +131,7 @@ function requestCard(r){
  (r.author_id===session.user.id&&r.status!=='resolved'?'<button class="small-btn" data-act="help-resolve" data-id="'+r.id+'">Marcar resolvido</button>':'')+'</div></div>';
 }
 function resolvePage(){
- return '<div class="glass-card"><span class="eyebrow">KORA A CHAVE</span><h1>Um lugar para se ajudar.</h1><p>Faça perguntas, compartilhe dicas e conecte-se com quem pode contribuir.</p><button class="primary-btn orange-btn" data-act="new-help">+ Pedir ajuda</button></div>'+
+ return '<div class="glass-card"><span class="eyebrow">KLIX A CHAVE</span><h1>Um lugar para se ajudar.</h1><p>Faça perguntas, compartilhe dicas e conecte-se com quem pode contribuir.</p><button class="primary-btn orange-btn" data-act="new-help">+ Pedir ajuda</button></div>'+
  '<h2 style="margin-top:24px">Pedidos da comunidade</h2>'+
  (requests.length?requests.map(requestCard).join(''):empty('Nenhum pedido ainda','Você pode iniciar a comunidade de ajuda.','<button class="small-btn" data-act="new-help">Criar pedido</button>'));
 }
@@ -183,12 +187,43 @@ async function processAuth(form){
  else r=await sb.auth.signInWithPassword({email,password});
  if(r.error)throw r.error;
  if(authMode==='signup'&&!r.data.session){authMode='login';notice='Cadastro solicitado. Verifique seu e-mail e confirme a conta pelo link de ativação. Depois, entre com sua senha.';renderAuth();return}
- session=r.data.session||null;if(session){route='inicio';await refresh();toast('Bem-vindo ao KORA!')}else renderAuth();
+ session=r.data.session||null;if(session){route='inicio';await refresh();toast('Bem-vindo ao KLIX!')}else renderAuth();
  }catch(err){notice=fallbackError(err);renderAuth()}finally{busyUI(false)}
 }
 async function action(q){if(busy)return;busy=true;try{await q();}catch(err){toast(fallbackError(err))}finally{busy=false}}
 function editProfile(){
- modal('Editar perfil','<form id="profile-form"><label class="field"><span>Nome</span><input name="display_name" maxlength="70" minlength="2" required value="'+safe(me.display_name)+'"></label><label class="field"><span>Usuário (letras minúsculas, números, _ e .)</span><input name="username" pattern="[a-z][a-z0-9_.]{2,23}" minlength="3" maxlength="24" required value="'+safe(me.username)+'"></label><label class="field"><span>Bio</span><textarea name="bio" maxlength="220">'+safe(me.bio)+'</textarea></label><div class="modal-footer"><button type="submit" class="primary-btn">Salvar perfil</button></div></form>');
+ const current=me.avatar_path?picture(me.avatar_path):'';
+ modal('Editar perfil',
+ '<form id="profile-form">'+
+ '<div class="klix-photo-editor"><div class="klix-photo-preview">'+
+ (current?'<img id="avatar-preview" src="'+safe(current)+'" alt="Sua foto atual" onerror="this.remove()">':
+ '<span id="avatar-placeholder">'+safe((me.display_name||'K').slice(0,1).toUpperCase())+'</span><img id="avatar-preview" alt="Nova foto selecionada" hidden>')+
+ '</div><label class="klix-photo-pick" for="profile-photo">📷 Alterar foto do perfil</label>'+
+ '<input id="profile-photo" name="avatar_file" type="file" accept="image/*" aria-label="Selecionar foto do perfil">'+
+ '<p class="muted">Escolha uma imagem de até 20 MB. Ela será recortada e reduzida para foto de perfil. A foto ficará visível para outros membros.</p></div>'+
+ '<label class="field"><span>Nome</span><input name="display_name" maxlength="70" minlength="2" required value="'+safe(me.display_name)+'"></label>'+
+ '<label class="field"><span>Nome de usuário</span><input name="username" pattern="[a-z][a-z0-9_.]{2,23}" minlength="3" maxlength="24" required value="'+safe(me.username)+'"></label>'+
+ '<label class="field"><span>Bio</span><textarea name="bio" maxlength="220">'+safe(me.bio||'')+'</textarea></label>'+
+ '<div class="modal-footer"><button type="submit" class="primary-btn">Salvar alterações</button></div></form>');
+}
+function compressProfilePhoto(file){
+ return new Promise((resolve,reject)=>{
+  if(!file || !file.type.startsWith('image/')){reject(new Error('Selecione uma imagem válida.'));return}
+  if(file.size>20*1024*1024){reject(new Error('A foto deve ter até 20 MB.'));return}
+  const url=URL.createObjectURL(file),img=new Image();
+  img.onload=()=>{
+   URL.revokeObjectURL(url);
+   try{
+    const canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;
+    const ctx=canvas.getContext('2d');if(!ctx)throw new Error('Seu navegador não conseguiu preparar a foto.');
+    const side=Math.min(img.naturalWidth,img.naturalHeight);
+    ctx.drawImage(img,(img.naturalWidth-side)/2,(img.naturalHeight-side)/2,side,side,0,0,512,512);
+    canvas.toBlob(blob=>blob&&blob.size<=5242880?resolve(blob):reject(new Error('Não foi possível reduzir essa foto.')),'image/jpeg',0.82);
+   }catch(err){reject(err)}
+  };
+  img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Não foi possível abrir a imagem escolhida no navegador.'))};
+  img.src=url;
+ });
 }
 function commentsDialog(postid){
  const p=posts.find(x=>x.id===postid);if(!p)return;
@@ -210,7 +245,7 @@ function chatWith(userId){
 }
 async function invite(){
  const u=BASE;
- if(navigator.share){try{await navigator.share({title:'Entre para o KORA!',text:'Vamos nos conectar no KORA — nossa nova rede social.',url:u});return}catch{}}
+ if(navigator.share){try{await navigator.share({title:'Entre para o KLIX!',text:'Vamos nos conectar no KLIX — nossa nova rede social.',url:u});return}catch{}}
  try{await navigator.clipboard.writeText(u);toast('Link de convite copiado!')}catch{modal('Convidar amigos','<p>Compartilhe este link:</p><p class="simple-text">'+safe(u)+'</p>')}
 }
 function postOptions(id){
@@ -262,6 +297,17 @@ document.addEventListener('click',e=>{
  case 'signout':action(async()=>{const r=await sb.auth.signOut();if(r.error)throw r.error;session=null;me=null;closeModal();renderAuth();toast('Você saiu da conta.')});break;
  }
 });
+document.addEventListener('change',e=>{
+ if(e.target?.id!=='profile-photo')return;
+ const file=e.target.files?.[0];if(!file)return;
+ if(!file.type.startsWith('image/')||file.size>20*1024*1024){toast('Escolha uma foto de até 20 MB.');e.target.value='';return}
+ const preview=el('avatar-preview');if(!preview)return;
+ const objectUrl=URL.createObjectURL(file);
+ preview.onload=()=>URL.revokeObjectURL(objectUrl);
+ preview.onerror=()=>{URL.revokeObjectURL(objectUrl);preview.hidden=true;toast('Não foi possível visualizar essa imagem.')};
+ preview.src=objectUrl;preview.hidden=false;
+ const ph=el('avatar-placeholder');if(ph)ph.hidden=true;
+});
 document.addEventListener('input',e=>{
  if(e.target.id==='search-people'){filter=e.target.value.toLowerCase();el('people-list').innerHTML=people.filter(p=>(p.display_name+' '+p.username).toLowerCase().includes(filter)).map(personRow).join('')||empty('Nenhuma pessoa encontrada','Tente outro nome ou convide seus amigos.')}
 });
@@ -295,7 +341,22 @@ document.addEventListener('submit',async e=>{
  if(result.error){if(image_path)await sb.storage.from('vira-media').remove([image_path]);throw result.error}
  go('inicio');
  }else if(f.id==='profile-form'){
- result=await sb.from('profiles').update({display_name:val('display_name'),username:val('username').toLowerCase(),bio:val('bio')}).eq('id',session.user.id);
+ const selected=f.elements.namedItem('avatar_file')?.files?.[0];
+ let nextPath=null;
+ if(selected){
+   const jpeg=await compressProfilePhoto(selected);
+   nextPath=session.user.id+'/avatars/'+crypto.randomUUID()+'.jpg';
+   const upload=await sb.storage.from('vira-media').upload(nextPath,jpeg,{contentType:'image/jpeg',cacheControl:'3600',upsert:false});
+   if(upload.error)throw upload.error;
+ }
+ const changes={display_name:val('display_name'),username:val('username').toLowerCase(),bio:val('bio')};
+ if(nextPath)changes.avatar_path=nextPath;
+ result=await sb.from('profiles').update(changes).eq('id',session.user.id).select('id,avatar_path').single();
+ if(result.error){if(nextPath)await sb.storage.from('vira-media').remove([nextPath]);throw result.error}
+ if(nextPath&&me.avatar_path&&me.avatar_path!==nextPath&&me.avatar_path.startsWith(session.user.id+'/avatars/')){
+   // Cleaning the previous photo is best-effort; never roll back the saved profile for cleanup failure.
+   await sb.storage.from('vira-media').remove([me.avatar_path]).catch(()=>{});
+ }
  }else if(f.id==='comment-form'){
  result=await sb.from('comments').insert({post_id:f.dataset.id,author_id:session.user.id,body:val('body')});
  }else if(f.id==='help-form'){
@@ -317,7 +378,7 @@ document.addEventListener('submit',async e=>{
  if(fid==='message-form')chatWith(target);
  if(fid==='comment-form')commentsDialog(target);
  if(fid==='answer-form')helpDialog(target);
- toast(fid==='report-form'?'Denúncia registrada.':'Salvo no KORA.');
+ toast(fid==='report-form'?'Denúncia registrada.':'Salvo no KLIX.');
  });
 });
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});

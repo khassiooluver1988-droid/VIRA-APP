@@ -11,6 +11,8 @@ on:
       - 'docs/live.css'
       - 'docs/supabase-config.js'
       - 'tests/live-smoke.cjs'
+      - 'tests/klix-profile.cjs'
+      - 'docs/klix.css'
       - '.github/workflows/testar-vira-social.yml'
   workflow_dispatch:
 permissions:
@@ -31,3 +33,5 @@ jobs:
         run: npm install --no-save --no-package-lock jsdom@26.1.0
       - name: Testar cadastro bloqueado sem backend e fluxos de interface simulada
         run: node tests/live-smoke.cjs
+      - name: Testar upload e foto do perfil no KLIX
+        run: node tests/klix-profile.cjs
