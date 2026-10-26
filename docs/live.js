@@ -2,7 +2,7 @@
 /* KORA Social — beta real. Os dados são persistidos apenas no Supabase do KORA.
  * Não há conta demonstrativa e não há simulação de publicações.
  */
-const cfg = window.KORA_CONFIG || {};
+const cfg = window.VIRA_CONFIG || {};
 const BASE = 'https://khassiooluver1988-droid.github.io/VIRA-APP/index-live.html';
 let sb = null, session = null, me = null, route = 'inicio', busy = false, authMode = 'login', notice = '';
 let people=[],posts=[],likes=[],comments=[],follows=[],requests=[],answers=[],messages=[],stories=[];
