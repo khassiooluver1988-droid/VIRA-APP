@@ -82,7 +82,7 @@ create table if not exists public.reports(
  reported_user_id uuid references public.profiles(id) on delete set null,
  reason text not null check (char_length(trim(reason)) between 5 and 500),
  created_at timestamptz not null default now(),
- check (post_id is not null or reported_user_id is not null)
+
 );
 
 create or replace function vira_private.create_profile_for_user()
@@ -90,7 +90,9 @@ returns trigger language plpgsql security definer set search_path = pg_catalog,p
 as $$
 begin
   insert into public.profiles(id,username,display_name)
-  values(new.id,'vira_'||left(replace(new.id::text,'-',''),18), left(coalesce(nullif(trim(new.raw_user_meta_data->>'display_name'),''),'Novo usuário'),70));
+  values(new.id,'vira_'||left(replace(new.id::text,'-',''),18),
+         case when char_length(trim(coalesce(new.raw_user_meta_data->>'display_name',''))) between 2 and 70
+              then trim(new.raw_user_meta_data->>'display_name') else 'Novo usuário' end);
   return new;
 end;
 $$;
@@ -133,7 +135,8 @@ create policy "answers own insert" on public.help_answers for insert to authenti
 create policy "answers own delete" on public.help_answers for delete to authenticated using(author_id=(select auth.uid()));
 create policy "dm read participants" on public.direct_messages for select to authenticated using(sender_id=(select auth.uid()) or recipient_id=(select auth.uid()));
 create policy "dm insert sender" on public.direct_messages for insert to authenticated with check(sender_id=(select auth.uid()));
-create policy "reports insert reporter" on public.reports for insert to authenticated with check(reporter_id=(select auth.uid()));
+create policy "reports insert reporter" on public.reports for insert to authenticated
+with check(reporter_id=(select auth.uid()) and (post_id is not null or reported_user_id is not null));
 
 -- Cadastro nas redes não deve ficar aberto para anônimos; permissões públicas são desabilitadas.
 revoke all on public.profiles,public.posts,public.follows,public.likes,public.comments,public.help_requests,public.help_answers,public.direct_messages,public.reports from anon;
