@@ -139,8 +139,8 @@ async function refresh(){
  fetchCollection('direct_messages',q=>q.order('created_at',{ascending:true}).limit(1000)),
  ]);
  [people,posts,likes,comments,follows,requests,answers,messages]=all;
- me=pOf(session.user.id);
- if(me.id!==session.user.id)throw new Error('Seu perfil ainda não foi criado. Entre novamente ou procure suporte.');
+ me=people.find(x=>x.id===session.user.id);
+ if(!me)throw new Error('Seu perfil ainda não foi criado. Entre novamente ou procure suporte.');
  lastError='';render();
  }catch(err){lastError=fallbackError(err);el('view').innerHTML='<div class="view-notice"><b>Não foi possível carregar os dados.</b><p>'+safe(lastError)+'</p><button class="primary-btn" data-act="reload">Tentar novamente</button></div>'}
 }
