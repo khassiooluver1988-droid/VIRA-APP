@@ -74,7 +74,7 @@ function homePage(){
  (posts.length?posts.map(postCard).join(''):empty('Seu feed está começando','Convide amigos para criar as primeiras publicações.','<button class="primary-btn" data-route="criar">Criar primeira publicação</button>'));
 }
 function personRow(p){
- return '<div class="person-row">'+avatar(p)+'<div><b>'+safe(p.display_name)+'</b><small>@'+safe(p.username)+'</small></div>'+
+ return '<div class="person-row">'+avatar(p)+'<div><button class="ghost-btn" data-act="open-profile" data-id="'+p.id+'">'+safe(p.display_name)+'</button><small>@'+safe(p.username)+'</small></div>'+
  (p.id===session.user.id?'<span class="user-label">Você</span>':
  '<button class="small-btn" data-act="follow" data-id="'+p.id+'">'+(isFollow(p.id)?'Seguindo':'Seguir +')+'</button><button class="round-btn" aria-label="Mensagem" data-act="chat" data-id="'+p.id+'">✉</button>')+'</div>';
 }
@@ -267,6 +267,9 @@ document.addEventListener('submit',async e=>{
  result=await sb.from('direct_messages').insert({sender_id:session.user.id,recipient_id:f.dataset.id,body:val('body')});
  }else if(f.id==='report-form'){
  result=await sb.from('reports').insert({reporter_id:session.user.id,post_id:f.dataset.id,reason:val('reason')});
+ }else if(f.id==='password-update-form'){
+ if(val('new_password').length<8)throw new Error('Use senha com pelo menos 8 caracteres.');
+ result=await sb.auth.updateUser({password:val('new_password')});
  }
  if(result?.error)throw result.error;
  const fid=f.id,target=f.dataset.id;
@@ -287,7 +290,7 @@ async function init(){
  sb.auth.onAuthStateChange((event,newSession)=>{
    if(event==='SIGNED_OUT'){session=null;me=null;renderAuth()}
    else if(event==='SIGNED_IN'&&newSession&&!session){session=newSession;setTimeout(()=>refresh(),30)}
-   else if(event==='PASSWORD_RECOVERY'){notice='Para alterar a senha, use a opção de recuperação pelo e-mail. A atualização direta ainda está sendo implementada.';renderAuth()}
+   else if(event==='PASSWORD_RECOVERY'){session=newSession;modal('Redefinir minha senha','<form id="password-update-form"><label class="field"><span>Nova senha</span><input type="password" name="new_password" minlength="8" required autocomplete="new-password"></label><button class="primary-btn" type="submit">Atualizar senha</button></form>')}
  });
 }
 init().catch(err=>{lastError=fallbackError(err);statusPage();toast('Falha ao iniciar: '+lastError)});
