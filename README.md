@@ -1,33 +1,30 @@
-# VIRA-APP
+# KORA Social — repositório técnico VIRA-APP
 
-**VIRA — Assista. Conecte-se. Resolva.**
+**KORA** é a identidade visual da rede social. O nome técnico do repositório e do projeto Supabase permanece **VIRA-APP** para preservar o endereço público e as integrações.
 
-Aplicativo social para Android e iPhone: vídeos curtos, talentos, pedidos de ajuda e oportunidades reais.
+## Versão online
+**[Abrir KORA no navegador](https://khassiooluver1988-droid.github.io/VIRA-APP/)**
 
-## Situação do projeto
-Este repositório contém a base técnica inicial do VIRA. **Não é um produto publicado**.
-- MVP Flutter demonstrativo local: cinco abas, splash de marca e fluxo de pedidos em memória.
-- Estrutura SQL Supabase preparada para revisão. **Não aplicada em banco remoto**.
-- Testes estáticos locais: 8 aprovações, mas sem compilação Flutter nem testes mobile reais.
-- Integração de login, vídeos em rede, denúncias funcionais e persistência de dados ainda pendentes.
-- Os arquivos originais da logo e da animação são mantidos no pacote local e precisam ser enviados à pasta `assets/branding/` antes da compilação do projeto Flutter completo.
+A versão web possui formulário de cadastro/entrada conectado ao Supabase, perfil, feed com textos e fotos reais, curtidas, comentários, seguidores, mensagens privadas, stories de 24 horas e área Resolver. Nenhuma conta nem publicação de exemplo deve ser criada automaticamente.
 
-## Marca aprovada
-Não redesenhar ou alterar a logo do VIRA. Manter símbolo roxo/laranja, tipografia, slogan e cores da referência original. Motion graphics da abertura usa camadas fiéis ao material fornecido.
+**Status: beta.** É necessário verificar configuração dos e-mails (SMTP/URLs), recuperação e exclusão de conta, moderação e testes de ponta a ponta com usuários reais antes de divulgar como rede social pronta. Os vídeos ainda não têm envio funcional.
 
-## Começar no computador
-1. Baixar o pacote completo VIRA do chat e extrair.
-2. Instalar Flutter SDK: https://docs.flutter.dev/get-started/install .
-3. Na pasta extraída, executar:
-   - `flutter doctor`
-   - `flutter create --project-name vira .`
-   - `flutter pub get`
-   - `flutter test`
-   - `flutter run`
-4. Antes de integrar usuários, criar um Supabase **exclusivo** do VIRA e testar RLS.
-5. Nunca colocar `service_role`, `sb_secret_`, senhas reais ou `.env` no repositório.
+## Referência visual aprovada
+![Prévia limpa da tela KORA, sem marcação verde](docs/assets/referencias/kora-feed-sem-marcacao.webp)
 
-**Orçamento inicial máximo:** R$ 2.000. **Protocolo de planejamento:** ASD-STE100-002-2026-ANEXAR-SEMPRE.
+A imagem é uma **referência de design**, não um registro de perfis ou publicações reais. A anotação verde do print foi retirada. Não substituir a aplicação funcional por essa imagem. [Guia completo de identidade visual](docs/KORA_VISUAL.md).
 
-## Escopo do MVP
-Início, Descobrir, Criar, Resolver, Perfil; autenticação planejada; publicação, respostas e status de resolução em desenvolvimento. Testes Android/iOS e moderação real são condições para piloto público.
+## Identidade
+- Fundo branco-marfim `#FFFAF4`, cores oficiais laranja, rosa, roxo e azul.
+- Marca KORA no topo e animação de abertura.
+- Navegação: Início, Vídeos, Criar, Buscar, Perfil.
+- O repositório contém a base Flutter inicial, mas a versão divulgável atualmente é a web.
+
+## Infraestrutura e segurança
+- GitHub Pages hospeda os arquivos de `docs/`.
+- Supabase exclusivo do KORA/VIRA-APP, região `sa-east-1`.
+- Dados protegidos por Row Level Security (RLS); não publicar chaves de administrador.
+- Fotografias do bucket `vira-media` possuem URLs públicas.
+- [Configuração pendente de e-mails e cadastro](docs/CONFIGURACAO_CADASTRO_REAL.md).
+
+Protocolo: ASD-STE100-002-2026-ANEXAR-SEMPRE.

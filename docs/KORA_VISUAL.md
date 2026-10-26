@@ -19,3 +19,9 @@ A marca de produto exibida aos usuários é **KORA**, com cores originais laranj
 - As imagens enviadas ao bucket `vira-media` possuem URLs públicas.
 - O app é uma versão web beta; não uma aplicação iOS nativa nem um clone completo do Instagram.
 - Não inserir senhas em GitHub.
+
+## Prévia atualizada — 26/10/2026
+
+![Captura de referência corrigida, sem seta/marcação verde](assets/referencias/kora-feed-sem-marcacao.webp)
+
+Esta prévia foi ajustada somente para remover a anotação verde. **Não** faz parte do feed e não deve virar uma publicação fictícia. A interface de produção continua renderizando dados de pessoas que se cadastrarem.
