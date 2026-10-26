@@ -3,6 +3,10 @@ const assert=require('node:assert/strict');const {webkit,devices}=require('playw
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
 const res=await page.goto('https://khassiooluver1988-droid.github.io/VIRA-APP/',{waitUntil:'domcontentloaded',timeout:60000});
 assert.equal(res.status(),200);await page.getByText('Entre para a comunidade KORA').waitFor({timeout:30000});
+ await page.waitForFunction(()=>{const img=document.querySelector('#kora-splash .splash-logo');return img&&img.complete;},{timeout:20000});
+ assert.ok(await page.locator('#kora-splash .splash-logo').evaluate(img=>img.naturalWidth>0),'A logo da animação não carregou na hospedagem pública');
+ await page.waitForFunction(()=>{const img=document.querySelector('.auth-logo img');return img&&img.complete;},{timeout:20000});
+ assert.ok(await page.locator('.auth-logo img').evaluate(img=>img.naturalWidth>0),'A logo do cadastro não carregou no navegador');
 assert.equal(await page.locator('.auth-panel').count(),1);
 await page.locator('[data-act="mode"][data-id="signup"]').click();
 assert.equal(await page.locator('input[name="email"]').count(),1);
