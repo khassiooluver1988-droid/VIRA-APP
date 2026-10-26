@@ -3,7 +3,7 @@ const fs = require('node:fs');
 const {JSDOM} = require('jsdom');
 const html = fs.readFileSync('docs/index-live.html','utf8');
 const source = fs.readFileSync('docs/live.js','utf8');
-assert.match(html, /VIRA Social/);
+assert.match(html, /KORA/);
 assert.match(source, /auth\.signUp/);
 assert.match(source, /auth\.signInWithPassword/);
 assert.match(source, /from\('posts'\)/);
@@ -26,7 +26,7 @@ async function boot(config={},mock=null) {
  const data={profiles:[{id:sid,username:'pessoa_vira',display_name:'Pessoa VIRA',bio:'Eu gosto do VIRA'}],posts:[],likes:[],comments:[],follows:[],help_requests:[],help_answers:[],direct_messages:[],stories:[]};
  const mutator=(table,method,payload)=>{if(method==='insert'){data[table].push({...payload,id:'a2fce48f-2511-4dc0-b8e3-835cace64222',created_at:new Date().toISOString()})}return {data:[],error:null}};
  const query=table=>({
-  select(){return this},order(){return this},limit(){return this},eq(){return this},
+  select(){return this},order(){return this},limit(){return this},eq(){return this},gt(){return this},
   insert(v){return Promise.resolve(mutator(table,'insert',v))},
   update(v){return {eq(){return Promise.resolve({data:[],error:null})}}},
   delete(){return {eq(){return this},then(fn){return Promise.resolve({data:[],error:null}).then(fn)}}},
